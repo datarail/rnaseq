@@ -54,4 +54,4 @@
 
 ## Running differential expression on the new count matrix files
 
-<Instructions on how to run our edgeR / DESeq2 pipeline here>
+Instructions on how to run our edgeR / DESeq2 pipeline here
