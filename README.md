@@ -51,3 +51,7 @@
 10. Note: The instructions assume hg19 - genome build 37. Additional reading:
     - http://bcbio-nextgen.readthedocs.io/en/latest/index.html
     - https://github.com/chapmanb/bcbio-nextgen/tree/master/config/templates
+
+## Running differential expression on the new count matrix files
+
+<Instructions on how to run our edgeR / DESeq2 pipeline here>
