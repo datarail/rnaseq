@@ -2,34 +2,24 @@
 
 ## Converting FASTQ files to count matrices
 
-1. Login to Orchestra using instructions available at https://wiki.med.harvard.edu/Orchestra/NewUserGuide
+1. Login to Orchestra using the instructions available at https://wiki.med.harvard.edu/Orchestra/NewUserGuide
 
-2. Add the following lines to your .bashrc to have the path to bcbio in your orchestra setup:
+2. Use `vim ~/.bashrc` or `emacs ~/.bashrc` to open your `.bashrc` file and add the following lines to have the path to bcbio in your orchestra setup:
+    ```
+    # Environment variables for running bcbio
+    export PATH=/opt/bcbio/centos/bin:$PATH
+    unset PYTHONHOME
+    unset PYTHONPATH
+    export PYTHONNOUSERSITE=1
+    module load dev/java/jdk1.7
+    ```
+    Save and exit.
+3. Move your fastq files to the following location: `/groups/<groupname>/<yourname>/<projectname>/`
+    (For example, this could be `/groups/springer/sarah/Isog/`)
 
-vim ~/.bashrc
+4. Move your yaml file to this directory as well. An example .yaml file is available in this GitHub repository as `yaml_example.yaml`.
 
-#Paste in the following lines: 
-
-# Environment variables for running bcbio
-export PATH=/opt/bcbio/centos/bin:$PATH
-unset PYTHONHOME
-unset PYTHONPATH
-export PYTHONNOUSERSITE=1
-module load dev/java/jdk1.7
-
-#save and exit
-
-
-
-#Have your fastq files in this location
-
-/groups/"groupname"/"yourname"/"projectname"
-	example for me this is /groups/springer/sarah/Isog
-
-#Have your yaml file in this directory as well.
-	example yaml_example.yaml
-
-#Make a csv file describing your samples
+5. Make a csv file describing your samples
 	example sample_description.csv
 
 	
