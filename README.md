@@ -33,16 +33,17 @@
 8. Move into the `work` directory. Create the following submission file using `emacs submit_bcbio.lsf` or `vim submit_bcbio.lsf`:
     ```
     #!/bin/bash
+    
+    #BSUB -q priority
+    #BSUB -J bcbio_mov10
+    #BSUB -n 1
+    #BSUB -W 100:0
+    #BSUB -R "rusage[mem=10000]"
+    #BSUB -e mov10_project.err
+    #BSUB -o mov10_project.out
+    
     bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
     ```
-    
-    - `#BSUB -q priority`
-    - `#BSUB -J bcbio_mov10`
-    - `#BSUB -n 1`
-    - `#BSUB -W 100:0`
-    - `#BSUB -R "rusage[mem=10000]"`
-    - `#BSUB -e mov10_project.err`
-    - `#BSUB -o mov10_project.out`
 
 9. Submit the job to Orchestra using the following command on the newly-created submission file: `bsub < submit_bcbio.lsf`
     - The job will sometimes time out or have memory issue. In this case, one can just re-submit the job with different settings. The job will look at where the previous run left off and start from there.
