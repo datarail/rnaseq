@@ -1,4 +1,10 @@
-#Add this to your bashrc to have the path to bcbio in your orchestra setup
+# LSP RNAseq pipeline
+
+## Converting FASTQ files to count matrices
+
+1. Login to Orchestra using instructions available at https://wiki.med.harvard.edu/Orchestra/NewUserGuide
+
+2. Add the following lines to your .bashrc to have the path to bcbio in your orchestra setup:
 
 vim ~/.bashrc
 
