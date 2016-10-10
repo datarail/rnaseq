@@ -19,53 +19,35 @@
 
 4. Move your yaml file to this directory as well. An example .yaml file is available in this GitHub repository as `yaml_example.yaml`.
 
-5. Make a csv file describing your samples
-	example sample_description.csv
-
+5. Make a .csv file describing your samples. Use `sample_description.csv` in this GitHub repository as a template.
 	
-#Run this line of code
-##NOTE - (*fq or *fastq depending on how files named)
+6. Run the following line of code:
+    ```
+    bcbio_nextgen.py -w template yaml_singleEnd.yaml sample_description.csv *.fq 
+    ```
+    - NOTE: Use `*.fq` or `*.fastq` depending on how the files are named
+    - NOTE: fastq filenames CANNOT end in _1 or _anynumber.fastq or it will cause FATAL ERROR
 
-bcbio_nextgen.py -w template yaml_singleEnd.yaml sample_description.csv *.fq 
+7. Running this setup of the data for bcbio creates project directory and the following subdirectories: `work`, `final`, `config`
 
-##NOTE2 - FASTQ FILES CAN NOT be named _1 or _anynumber.fastq or will cause FATAL ERROR
+8. Move into the `work` directory. Create the following submission file using `emacs submit_bcbio.lsf` or `vim submit_bcbio.lsf`:
+    ```
+    #!/bin/bash
+    bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
+    ```
+    
+    - `#BSUB -q priority`
+    - `#BSUB -J bcbio_mov10`
+    - `#BSUB -n 1`
+    - `#BSUB -W 100:0`
+    - `#BSUB -R "rusage[mem=10000]"`
+    - `#BSUB -e mov10_project.err`
+    - `#BSUB -o mov10_project.out`
 
+9. Submit the job to Orchestra using the following command on the newly-created submission file: `bsub < submit_bcbio.lsf`
+    - The job will sometimes time out or have memory issue. In this case, one can just re-submit the job with different settings. The job will look at where the previous run left off and start from there.
+    - Use the following alternate submission settings: `bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380`
 
-#Running this sets up the data for bcbio creates project directory and some sub directories.
-work, final, config directories are created
-
-
-#Move into the "work" directory
-#Run the lsf from here 
-
-
-bsub < submit_bcbio.lsf
-
-
-vim submit_bcbio.lsf
-##This is what submission looks like - if need to edit see notes below
-
-#!/bin/bash
-
-#BSUB -q priority
-#BSUB -J bcbio_mov10
-#BSUB -n 1
-#BSUB -W 100:0
-#BSUB -R "rusage[mem=10000]"
-#BSUB -e mov10_project.err
-#BSUB -o mov10_project.out
-
-bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
-
-
-## sometimes times out or memory issue - can just re-submit  with different settings - will look at where left off and start from there.
-#alternate submission settings:
-
-
-bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
-
-##note hg19 - genome build 37
-
-
-http://bcbio-nextgen.readthedocs.io/en/latest/index.html
-https://github.com/chapmanb/bcbio-nextgen/tree/master/config/templates
+10. Note: The instructions assume hg19 - genome build 37. Additional reading:
+    - http://bcbio-nextgen.readthedocs.io/en/latest/index.html
+    - https://github.com/chapmanb/bcbio-nextgen/tree/master/config/templates
