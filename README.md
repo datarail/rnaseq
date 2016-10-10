@@ -1,4 +1,4 @@
-# LSP RNAseq pipeline
+# Laboratory of Systems Pharmacology - RNAseq pipeline
 
 ## Converting FASTQ files to count matrices
 
