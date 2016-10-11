@@ -32,7 +32,7 @@
 
 8. Move into the `work` directory. Create the following submission file using `emacs submit_bcbio.lsf` or `vim submit_bcbio.lsf`:
     ```
-    #!/bin/bash
+    #!/bin/sh
     
     #BSUB -q priority
     #BSUB -J bcbio_mov10
