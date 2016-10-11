@@ -2,6 +2,8 @@
 
 ## Converting FASTQ files to count matrices
 
+0. If this is your first time using a linux command shell, make sure you type the commands in exactly as is. Things like spaces and quotes matter. The easiest way to do this is to copy and paste the commands from this README into your command shell.
+
 1. Login to Orchestra using the instructions available at https://wiki.med.harvard.edu/Orchestra/NewUserGuide
 
 2. Familiarize yourself with a text editor in linux. Some examples:
