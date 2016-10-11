@@ -47,7 +47,7 @@
     #!/bin/sh
     
     #BSUB -q priority
-    #BSUB -J bcbio_mov10
+    #BSUB -J bcbio_project
     #BSUB -n 1
     #BSUB -W 100:0
     #BSUB -R "rusage[mem=10000]"
