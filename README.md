@@ -51,10 +51,10 @@
     #BSUB -n 1
     #BSUB -W 100:0
     #BSUB -R "rusage[mem=10000]"
-    #BSUB -e mov10_project.err
-    #BSUB -o mov10_project.out
+    #BSUB -e project.err
+    #BSUB -o project.out
     
-    bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
+    bcbio_nextgen.py ../config/yaml_example.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
     ```
 
 10. Submit the job to Orchestra using the following command on the newly-created submission file: 
@@ -62,7 +62,7 @@
     bsub < submit_bcbio.lsf
     ```
     - The job will sometimes time out or have memory issue. In this case, one can just re-submit the job with different settings. The job will look at where the previous run left off and start from there.
-    - Use the following alternate submission settings: `bcbio_nextgen.py ../config/mov10_project.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380`
+    - Use the following alternate submission settings: `bcbio_nextgen.py ../config/yaml_example.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380`
 
 11. Note: The instructions assume hg19 - genome build 37. Additional reading:
     - http://bcbio-nextgen.readthedocs.io/en/latest/index.html
