@@ -23,7 +23,7 @@
 	
 6. Run the following line of code:
     ```
-    bcbio_nextgen.py -w template yaml_singleEnd.yaml sample_description.csv *.fq 
+    bcbio_nextgen.py -w template yaml_example.yaml sample_description.csv *.fq 
     ```
     - NOTE: Use `*.fq` or `*.fastq` depending on how the files are named
     - NOTE: fastq filenames CANNOT end in _1 or _anynumber.fastq or it will cause FATAL ERROR
