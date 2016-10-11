@@ -6,12 +6,9 @@
 
 1. Login to Orchestra using the instructions available at https://wiki.med.harvard.edu/Orchestra/NewUserGuide
 
-2. Familiarize yourself with a text editor in linux. Some examples:
-    - nano: `CTRL+O` to save, `CTRL+X` to exit
-    - vim: https://danielmiessler.com/study/vim/#gs.uVz6ZG4
-    - emacs: http://www.jesshamrick.com/2012/09/10/absolute-beginners-guide-to-emacs/
+2. Familiarize yourself with `nano`, a text editor in linux. Specifically, take a look at keyboard shortcuts like `CTRL+O` to save, `CTRL+X` to exit
 
-3. Use `nano ~/.bashrc` (or `emacs` or `vim`) to open your `.bashrc` file and add the following lines to have the path to bcbio in your orchestra setup:
+3. Use `nano ~/.bashrc` to open your `.bashrc` file and add the following lines to have the path to bcbio in your orchestra setup:
     ```
     # Environment variables for running bcbio
     export PATH=/opt/bcbio/centos/bin:$PATH
@@ -29,10 +26,10 @@
 5. Move your fastq files to this directory. (Using `mv` command on Orchestra.)
 
 6. Move your yaml file to this directory as well. An example .yaml file is available in this GitHub repository as `yaml_example.yaml`:
-    -OPTION 1: Open a new file with a text editor. Copy and paste the content of `yaml_example.yaml` to that file. Save and exit.
-    -OPTION 2: Download the file directly from GitHub using the following command: `wget https://raw.githubusercontent.com/sorgerlab/rnaseq/master/yaml_example.yaml`
+    - OPTION 1: Open a new file with a text editor. Copy and paste the content of `yaml_example.yaml` to that file. Save and exit.
+    - OPTION 2: Download the file directly from GitHub using the following command: `wget https://raw.githubusercontent.com/sorgerlab/rnaseq/master/yaml_example.yaml`
 
-7. Make a .csv file describing your samples. Use `sample_description.csv` in this GitHub repository as a template. As before, you can either create a new file and copy-and-paste OR using `wget https://raw.githubusercontent.com/ArtemSokolov/rnaseq/master/sample_description.csv`
+7. Make a .csv file describing your samples. Use `sample_description.csv` in this GitHub repository as a template. As before, you can either create a new file and copy-and-paste OR using `wget https://raw.githubusercontent.com/sorgerlab/rnaseq/master/sample_description.csv`
 	
 8. Run the following line of code:
     ```
