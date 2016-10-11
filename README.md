@@ -40,7 +40,7 @@
     ```
     - NOTE: Use `*.fq` or `*.fastq` depending on how the files are named
     - NOTE: fastq filenames CANNOT end in _1 or _anynumber.fastq or it will cause FATAL ERROR
-    Running this setup of the data for bcbio creates project directory and the following subdirectories: `work`, `final`, `config`
+    - Running this setup of the data for bcbio creates project directory and the following subdirectories: `work`, `final`, `config`
 
 9. Descend into the `work` subdirectory using `cd work`. Using a text editor (e.g., `nano submit_bcbio.lsf`) create the following submission file:
     ```
