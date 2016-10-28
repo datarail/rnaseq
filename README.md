@@ -37,9 +37,11 @@
     ```
     - NOTE: Use `*.fq` or `*.fastq` depending on how the files are named
     - NOTE: fastq filenames CANNOT end in _1 or _anynumber.fastq or it will cause FATAL ERROR
-    - Running this setup of the data for bcbio creates project directory and the following subdirectories: `work`, `final`, `config`
 
-9. Descend into the `work` subdirectory using `cd work`. Using a text editor (e.g., `nano submit_bcbio.lsf`) create the following submission file:
+9. Running this setup creates a project directory and the following subdirectories inside of that: `work`, `final`, `config`
+    - NOTE: The project directory will be named `sample_description`. You can control that by substituting a different name in all filenames and commands above.
+
+9. Descend into the `work` subdirectory of your project (by default, this is done using `cd sample_description/work`). Using a text editor (e.g., `nano submit_bcbio.lsf`) create the following submission file:
     ```
     #!/bin/sh
     
@@ -51,8 +53,9 @@
     #BSUB -e project.err
     #BSUB -o project.out
     
-    bcbio_nextgen.py ../config/yaml_example.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
+    bcbio_nextgen.py ../config/sample_description.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380
     ```
+    - NOTE: If you changed the name of your project from `sample_description` to something else, use that new name when specifying `../config/sample_description.yaml` above. The path has to point to an actual file in the `config` subdirectory.
 
 10. Submit the job to Orchestra using the following command on the newly-created submission file: 
     ```
