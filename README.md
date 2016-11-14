@@ -70,4 +70,14 @@
 
 ## Running differential expression on the count matrices
 
-Instructions on how to run our edgeR / DESeq2 pipeline here
+Once you obtained the count matrices, the basic differential expression pipeline can be run via the following command:
+
+    bcbio-rnaseq summarize path-to-project-summary-yaml -f "~celltype"
+    
+where `path-to-project-summary-yaml` refers to a file that you should be able to find in your `final` subdirectory (which is on the same level as the `config` and `work` subdirectories covered above). If you didn't change the name of `sample_description.csv`, the summary yaml file will live at `/groups/<groupname>/<yourname>/<projectname>/sample_description/final/<date>_sample_description/project-summary.yaml`.
+
+The `bcbio-rnaseq` command above will run the DESeq2 differential expression pipeline and produce a report in the R markdown format (http://rmarkdown.rstudio.com/). The formula that you provide after the `-f` flag must be in the appropriate format (see https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf) and reference the column names in your `sample_description.csv` file. In the example above, we provide `"~celltype"`, which implies that we are interested in performing a differential expression comparison along the third column of our `sample_description.csv`.
+
+Note that if you omit the formula, the script will perform basic quality control instead:
+
+    bcbio-rnaseq summarize path-to-project-summary-yaml
