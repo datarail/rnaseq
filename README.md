@@ -70,7 +70,20 @@
 
 ## Running differential expression on the count matrices
 
-Once you obtained the count matrices, the basic differential expression pipeline can be run via the following command:
+To run the next part of the analysis, you will need the `Rmarkdown` package. To install it on Orchestra, start up `R`, by typing the following commands in your shell:
+
+    ```
+    module load stats/R-3.3.1
+    R
+    ```
+This gets you into an `R`. You can now install the package by running the following command in `R`:
+    ```
+    install.package( "rmarkdown" )
+    ```
+    
+Go get a cup of coffee!
+
+Once you obtained the count matrices and finish installing `Rmarkdown`, the basic differential expression pipeline can be run via the following command:
 
     bcbio-rnaseq summarize path-to-project-summary-yaml -f "~celltype"
     
