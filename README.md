@@ -70,16 +70,17 @@
 
 ## Running differential expression on the count matrices
 
-To run the next part of the analysis, you will need the `Rmarkdown` package. To install it on Orchestra, start up `R`, by typing the following commands in your shell:
+To run the next part of the analysis, you will need a few R packages. To install it on Orchestra, start up `R`, by typing the following commands in your shell:
 
 ```
 module load stats/R/3.3.1
 R
 ```
 
-This gets you into an `R`. You can now install the package by running the following command in `R`:
+This gets you into an `R`. You can now install the packages by running the following command in `R`:
 ```
-install.package( "rmarkdown" )
+install.package( c("ggplot2", "reshape", "gplots", "edgeR", "CHBUtils", "pheatmap",
+              "DESeq2", "tximport", "DT", "DEGreport", "dplyr", "rmarkdown") )
 ```
     
 Go get a cup of coffee!
