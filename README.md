@@ -72,14 +72,15 @@
 
 To run the next part of the analysis, you will need the `Rmarkdown` package. To install it on Orchestra, start up `R`, by typing the following commands in your shell:
 
-    ```
-    module load stats/R-3.3.1
-    R
-    ```
+```
+module load stats/R/3.3.1
+R
+```
+
 This gets you into an `R`. You can now install the package by running the following command in `R`:
-    ```
-    install.package( "rmarkdown" )
-    ```
+```
+install.package( "rmarkdown" )
+```
     
 Go get a cup of coffee!
 
