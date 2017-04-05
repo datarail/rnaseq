@@ -37,7 +37,7 @@ get_args <- function(){
   if (is.null(argv$count) || is.null(argv$annotation) || is.null(argv$output)){
     print_help(opt_parser)
     stop("Count table, annotation and output path must be provided.\n 
-         usage: Rscript run_de.R -c path/to/rnaseq.count -a path/to/group_info.tsv -o path/to/output", call.=FALSE)
+         usage: Rscript run_de.R -c path/to/rnaseq.count -a path/to/group_info.txt -o path/to/output", call.=FALSE)
   }
   
   return( argv )
