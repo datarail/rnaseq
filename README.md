@@ -103,7 +103,7 @@ Usage: run_de.R [options]
 
 Example:
 ```
-Rscript run_de.R -c path/to/rnaseq.count -a path/to/group_info.txt -o path/to/output
+Rscript run_de.R -c path/to/rnaseq.count -a path/to/annotation.txt -o path/to/output
 ```
 
 Options:
@@ -112,7 +112,7 @@ Options:
 		Path to .count file from bcbio output, which is a ensumbl ID by sample ID matrix
 
 	-a CHARACTER, --annotation=CHARACTER
- 		Path to group information file, which is a dataframe with 3 columns: group, condition and control
+ 		Path to annotation information file, which is a dataframe with 3 columns: group, condition and control
                		group: contains information which treatment samples will be compared against control cases in each group
                		condition: indicates type of treatment, replicates have same condition
                		control: TRUE for controls and FALSE for treatments
