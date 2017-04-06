@@ -115,7 +115,7 @@ Options:
                		group: contains information which treatment samples will be compared against control cases in each group
                		condition: indicates type of treatment, replicates have same condition
                		control: TRUE for controls and FALSE for treatments
-               		order of well in samples annotation must be the same as the columns in count table
+               		order of samples in annotation must be the same as samples in count table
 
 	-o CHARACTER, --output=CHARACTER
   		Path to save differential analysis results

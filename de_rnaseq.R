@@ -20,7 +20,7 @@ get_args <- function(){
                 \n\tgroup: contains information which treatment samples will be compared against control cases in each group
                 \n\tcondition: indicates type of treatment, replicates have same condition
                 \n\tcontrol: TRUE for controls and FALSE for treatments
-                \n\torder of well in samples annotation must be the same as the columns in count table", metavar="character"),
+                \n\torder of samples in annotation must be the same as samples in count table", metavar="character"),
     make_option(c("-o", "--output"), type="character", default=NULL, 
                 help="Path to save differential analysis results", metavar="character"),
     make_option(c("-p", "--pairwise"), type="logical", default=TRUE, 

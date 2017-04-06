@@ -1,5 +1,5 @@
 ## run_de.R - Run edgeR differential expression analysis from bcbio count results and sample annotation
-## Usage: Rscript run_de.R -c path/to/rnaseq.count -a path/to/group_info.txt -o path/to/output
+## Usage: Rscript run_de.R -c path/to/rnaseq.count -a path/to/annotation.txt -o path/to/output
 ## by Chris Chen
 
 ## Load the API
