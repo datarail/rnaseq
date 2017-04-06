@@ -68,42 +68,12 @@
     - http://bcbio-nextgen.readthedocs.io/en/latest/index.html
     - https://github.com/chapmanb/bcbio-nextgen/tree/master/config/templates
 
-## Running differential expression on the count matrices
-
-To run the next part of the analysis, you will need a few R packages. To install it on Orchestra, start up `R`, by typing the following commands in your shell:
-
-```
-module load stats/R/3.3.1
-R
-```
-
-This gets you into an `R`. You can now install the packages by running the following command in `R`:
-```
-install.package( c("ggplot2", "reshape", "gplots", "edgeR", "CHBUtils", "pheatmap",
-              "DESeq2", "tximport", "DT", "DEGreport", "dplyr", "rmarkdown") )
-```
-    
-Go get a cup of coffee!
-
-Once you obtained the count matrices and finish installing `Rmarkdown`, the basic differential expression pipeline can be run via the following command:
-
-    bcbio-rnaseq summarize path-to-project-summary-yaml -f "~celltype"
-    
-where `path-to-project-summary-yaml` refers to a file that you should be able to find in your `final` subdirectory (which is on the same level as the `config` and `work` subdirectories covered above). If you didn't change the name of `sample_description.csv`, the summary yaml file will live at `/groups/<groupname>/<yourname>/<projectname>/sample_description/final/<date>_sample_description/project-summary.yaml`.
-
-The `bcbio-rnaseq` command above will run the DESeq2 differential expression pipeline and produce a report in the R markdown format (http://rmarkdown.rstudio.com/). The formula that you provide after the `-f` flag must be in the appropriate format (see https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf) and reference the column names in your `sample_description.csv` file. In the example above, we provide `"~celltype"`, which implies that we are interested in performing a differential expression comparison along the third column of our `sample_description.csv`.
-
-Note that if you omit the formula, the script will perform basic quality control instead:
-
-    bcbio-rnaseq summarize path-to-project-summary-yaml
-
-
 ## run_de.R - Run edgeR differential expression analysis from bcbio count results and sample annotation
 Usage: run_de.R [options]
 
 Example:
 ```
-Rscript run_de.R -c path/to/rnaseq.count -a path/to/group_info.txt -o path/to/output
+Rscript run_de.R -c path/to/rnaseq.count -a path/to/annotation.txt -o path/to/output
 ```
 
 Options:
@@ -112,7 +82,7 @@ Options:
 		Path to .count file from bcbio output, which is a ensumbl ID by sample ID matrix
 
 	-a CHARACTER, --annotation=CHARACTER
- 		Path to group information file, which is a dataframe with 3 columns: group, condition and control
+ 		Path to annotation information file, which is a dataframe with 3 columns: group, condition and control
                		group: contains information which treatment samples will be compared against control cases in each group
                		condition: indicates type of treatment, replicates have same condition
                		control: TRUE for controls and FALSE for treatments
