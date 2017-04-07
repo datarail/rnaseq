@@ -103,6 +103,8 @@ Usage: run_de.R [options]
 Example:
 ```
 Rscript run_de.R -c path/to/rnaseq.count -a path/to/annotation.txt -o path/to/output
+
+Rscript run_de.R -c example/input/test.count -a example/input/group.tsv -o example/output
 ```
 
 Options:
