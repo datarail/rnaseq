@@ -130,3 +130,8 @@ Options:
 
 	-h, --help
   		Show this help message and exit
+
+The output consists 3 files, each of them is a n by p matrix with n genes and p type of treatments:
+logFC.csv: log2 fold change
+pval.csv:  P-values
+fdr.csv:   FDR
