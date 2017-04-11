@@ -6,6 +6,7 @@
 library(edgeR)
 library(biomaRt)
 library( optparse )
+library(reshape2)
 
 ## Retrieves count file and group information file from command line arguments, 
 ## Returns a named list of values which is used by the main() function in run_de.R
