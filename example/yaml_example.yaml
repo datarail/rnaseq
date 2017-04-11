@@ -1,0 +1,18 @@
+# Template for human RNA-seq using Illumina prepared samples. 
+##same for single or paired end reads.  Paired end reads will be identified by notation R1 and R2 (read 1 and read 2) of the fastq files.
+
+##genome_build: hg19-ercc will automatically map to genome with ERCC spike in standards added in
+
+##the rest of the inputs are standard for most RNAseq applications
+---
+details:
+  - analysis: RNA-seq
+    genome_build: hg19-ercc
+    algorithm:
+      aligner: star
+      quality_format: standard
+      trim_reads: read_through
+      adapters: [truseq, polya]
+      strandedness: firststrand
+upload:
+  dir: ../final
