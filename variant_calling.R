@@ -60,15 +60,19 @@ vcf2vep <- function(vcfDir,outDir){
 
 #'  coversion .vep files to mutation results table
 #'
-#' @param vep_file filename for .vep file
+#' @param vep_folder path to .vep file
 #' @param keep_types types of variant('CONQUENCE') that would be kept
 #' @return mutation results table
-vep_parser <- function(vep_file,keep_types = c('frameshift_variant','inframe_deletion','inframe_insertion','missense_variant','protein_altering_variant','start_lost','stop_gained','stop_lost')){
-  sample_id <- gsub('.vep','',vep_file,fixed = T)
-  vep <- read.table(paste(vep_folder,vep_file,sep = ''), quote="\"",stringsAsFactors = F)
-  vep_f <- vep[vep$V7 %in% keep_types,]
-  genes <- gsub('.+SYMBOL=(.+);SYMBOL_SOURCE.+','\\1',vep_f$V14)
-  mut_table <- cbind(sample_id,genes,vep_f$V4,vep_f$V5,vep_f$V7,vep_f$V2,vep_f$V3,vep_f$V8,vep_f$V9,vep_f$V10,vep_f$V11)
-  colnames(mut_table) <- c('SAMPLE','SYMBOL','ENS_GENE','ENS_FEATURE','CONSEQUENCE','LOCATION','ALLELE','cDNA_POS','CDS_POS','PROT_POS','AMINO_ACID_CHANGE')
-  return(mut_table)
+vep_parser <- function(vep_folder,keep_types = c('frameshift_variant','inframe_deletion','inframe_insertion','missense_variant','protein_altering_variant','start_lost','stop_gained','stop_lost')){
+  mut_mat <- NULL
+  for(vep_file in list.files(vep_folder)){
+    sample_id <- gsub('.vep','',vep_file,fixed = T)
+    vep <- read.table(paste(vep_folder,vep_file,sep = ''), quote="\"",stringsAsFactors = F)
+    vep_f <- vep[vep$V7 %in% keep_types,]
+    genes <- gsub('.+SYMBOL=(.+);SYMBOL_SOURCE.+','\\1',vep_f$V14)
+    mut_table <- cbind(sample_id,genes,vep_f$V4,vep_f$V5,vep_f$V7,vep_f$V2,vep_f$V3,vep_f$V8,vep_f$V9,vep_f$V10,vep_f$V11)
+    mut_mat <- rbind(mut_mat,mut_table)
+  }
+  colnames(mut_mat) <- c('SAMPLE','SYMBOL','ENS_GENE','ENS_FEATURE','CONSEQUENCE','LOCATION','ALLELE','cDNA_POS','CDS_POS','PROT_POS','AMINO_ACID_CHANGE')
+  return(mut_mat)
 }
