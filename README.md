@@ -96,3 +96,42 @@ The `bcbio-rnaseq` command above will run the DESeq2 differential expression pip
 Note that if you omit the formula, the script will perform basic quality control instead:
 
     bcbio-rnaseq summarize path-to-project-summary-yaml
+
+## run_de.R - Run edgeR differential expression analysis from bcbio count results and sample annotation
+Usage: run_de.R [options]
+
+Example:
+```
+Rscript run_de.R -c path/to/rnaseq.count -a path/to/annotation.txt -o path/to/output
+
+Rscript run_de.R -c example/input/test.count -a example/input/group.tsv -o example/output
+```
+
+Options:
+
+	-c CHARACTER, --count=CHARACTER
+		Path to .count file from bcbio output, which is a ensumbl ID by sample ID matrix
+
+	-a CHARACTER, --annotation=CHARACTER
+ 		Path to annotation information file, which is a dataframe with 3 columns: group, condition and control
+               		group: contains information which treatment samples will be compared against control cases in each group
+               		condition: indicates type of treatment, replicates have same condition
+               		control: TRUE for controls and FALSE for treatments
+               		order of samples in annotation must be the same as samples in count table
+
+	-o CHARACTER, --output=CHARACTER
+  		Path to save differential analysis results
+
+	-p TRUE/FALSE, --pairwise=TRUE/FALSE
+  		If the P-values and FDR are given pairwise or as ANOVA-like test for any differences
+
+	-s TRUE/FALSE, --symbol=TRUE/FALSE
+  		If gene symbols will be added to the output
+
+	-h, --help
+  		Show this help message and exit
+
+The output consists 3 files, each of them is a n by p matrix with n genes and p type of treatments:
+logFC.csv: log2 fold change
+pval.csv:  P-values
+fdr.csv:   FDR
