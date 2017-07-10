@@ -68,8 +68,8 @@
 		source('de_rnaseq.R')
 		setwd(/path/to/bcbio/final)
 		get_sf()
-		sf = read.table('combined.sf',header = T,as.is = T)
-		tx2gene = read.csv('tx2gene.csv',header = F,as.is = T)
+		sf <- read.table('combined.sf',header = T,as.is = T)
+		tx2gene <- read.csv('tx2gene.csv',header = F,as.is = T)
 		count_table <- sf2tpm(sf,tx2gene,count=T)
 		write.table(count_table,'combined.counts',quote=F,row.names=F,sep='\t')
 
