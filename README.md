@@ -64,14 +64,14 @@
     - The job will sometimes time out or have memory issue. In this case, one can just re-submit the job with different settings. The job will look at where the previous run left off and start from there.
     - Use the following alternate submission settings: `bcbio_nextgen.py ../config/yaml_example.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380`
     - Bcbio will give you a .count file as count table generated from featureCounts. This could be used as direct input of run_de.R script. However, you might also interested in using  alignment-independent quantification results from salmon for differential analysis. To get count table from salmon you need to first combine the .sf files for each sample in R and merge the counts of same transcript to gene level: 
-	```
-	source('de_rnaseq.R')
-	setwd(path_of_bcbio_/final_folder)
-	get_sf()
-	count_table <- sf2tpm('combined.sf','tx2gene.csv')
-	write.table(count_table,'combined.counts',quote=F,row.names=F,sep='\t')
-	
-	```
+		```
+		source('de_rnaseq.R')
+		setwd(path_of_bcbio_/final_folder)
+		get_sf()
+		count_table <- sf2tpm('combined.sf','tx2gene.csv')
+		write.table(count_table,'combined.counts',quote=F,row.names=F,sep='\t')
+
+		```
 
 11. Note: The instructions assume hg19 - genome build 37. Additional reading:
     - http://bcbio-nextgen.readthedocs.io/en/latest/index.html
