@@ -1,0 +1,1 @@
+# alignmentbcbio_nextgen.py -w template ./201604_var.yaml 201604_var.csv ./*cd 201604_var/workbsub -q long -W 100:0 -R "rusage[mem=10000]" -o output.out bcbio_nextgen.py ../config/201604_var.yaml -n 32 -t ipython -s lsf -q parallel -r mincores=2 -r minconcores=2 '-rW=72:00' --retries 3 --timeout 380

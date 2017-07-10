@@ -1,0 +1,13 @@
+# Template for human RNA-seq using Illumina prepared samples - single end read
+---
+details:
+  - analysis: RNA-seq
+    genome_build: hg19-ercc
+    algorithm:
+      aligner: star
+      quality_format: standard
+      trim_reads: read_through
+      adapters: [truseq, polya]
+      strandedness: firststrand
+upload:
+  dir: ../final

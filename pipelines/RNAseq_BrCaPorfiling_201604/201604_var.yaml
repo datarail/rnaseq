@@ -1,0 +1,10 @@
+---
+details:
+  - analysis: variant2
+    genome_build: GRCh37
+    algorithm:
+      aligner: bwa
+      mark_duplicates: true
+      recalibrate: false
+      realign: false
+      variantcaller: freebayes
