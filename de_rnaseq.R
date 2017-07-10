@@ -72,19 +72,24 @@ tpm2rpkm <- function(combined,tx2gene,spikes = NULL){
   return(rpkm_raw[-nrow(rpkm_raw),])
 }
 
-#' transform TPM to RPKM
+#' get TPM or counts from salmon output
 #'
 #' @param combined output file end with .combined from bcbio.
 #' @param tx2gene output file which maps ensumble ID to gene from bcbio.
 #' @param spikes a vector of string defining the name of spikes.
+#' @param count should the results use counts instead of TPM?
 #' @return p by n matrix for p genes across n samples
-sf2tpm <- function(combined,tx2gene,spikes = NULL){
+sf2tpm <- function(combined,tx2gene,spikes = NULL,count=F){
   gene_mapping <- cbind('transcript'= c(tx2gene$V1,spikes$GenBank),'gene' = c(tx2gene$V2,spikes$ERCC_ID))
   genes <- gene_mapping[,2]
   names(genes) <- gene_mapping[,1]
   combined$gene <- genes[combined$Name]
   combined2 <- combined[!is.na(combined[,'gene']),]
-  tpm_combined <- data.frame('sample'=combined2$sample,'gene'=combined2$gene,'tpm_raw'=combined2$TPM)
+  if(count){
+    tpm_combined <- data.frame('sample'=combined2$sample,'gene'=combined2$gene,'tpm_raw'=combined2$NumReads)
+  }else{
+    tpm_combined <- data.frame('sample'=combined2$sample,'gene'=combined2$gene,'tpm_raw'=combined2$TPM)
+  }
   tpm_combined_gene <- tpm_combined %>% group_by(sample,gene)%>% summarise_each(funs(sum))
   
   tpm_raw <- acast(tpm_combined_gene,gene~sample)
