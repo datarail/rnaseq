@@ -1,12 +1,14 @@
 ## de_rnaseq.R - functions for the differential expression analysis
 ##
 ## LSP RNAseq bcbio pipeline 
-## https://github.com/chrischen1/bcbio
+## by Artem Sokolov, Chris Chen, et al.
 
 library(edgeR)
 library(biomaRt)
-library( optparse )
+library(optparse)
 library(reshape2)
+library(dplyr)
+library(synapseClient)
 
 ## Retrieves count file and group information file from command line arguments, 
 ## Returns a named list of values which is used by the main() function in run_de.R
@@ -28,7 +30,7 @@ get_args <- function(){
                 help="If the P-values and FDR are given pairwise or as ANOVA-like test for any differences", metavar="TRUE/FALSE"),
     make_option(c("-s", "--symbol"), type="logical", default=FALSE, 
                 help="If gene symbols will be added to the output", metavar="TRUE/FALSE")
-  )
+    )
   
   ## Parse the arguments
   opt_parser = OptionParser(option_list=option_list)
@@ -42,7 +44,7 @@ get_args <- function(){
   }
   
   return( argv )
-}
+  }
 
 #' transform TPM to RPKM
 #'
@@ -67,9 +69,34 @@ tpm2rpkm <- function(combined,tx2gene,spikes = NULL){
   rpkm_combined_gene <- rpkm_combined %>% group_by(sample,gene)%>% summarise_each(funs(sum))
   
   rpkm_raw <- acast(rpkm_combined_gene,gene~sample)
+  return(rpkm_raw[-nrow(rpkm_raw),])
 }
 
-#' get hgnc_symbol from ensembl_gene_id from 
+#' get TPM or counts from salmon output
+#'
+#' @param combined output file end with .combined from bcbio.
+#' @param tx2gene output file which maps ensumble ID to gene from bcbio.
+#' @param spikes a vector of string defining the name of spikes.
+#' @param count should the results use counts instead of TPM?
+#' @return p by n matrix for p genes across n samples
+sf2tpm <- function(combined,tx2gene,spikes = NULL,count=F){
+  gene_mapping <- cbind('transcript'= c(tx2gene$V1,spikes$GenBank),'gene' = c(tx2gene$V2,spikes$ERCC_ID))
+  genes <- gene_mapping[,2]
+  names(genes) <- gene_mapping[,1]
+  combined$gene <- genes[combined$Name]
+  combined2 <- combined[!is.na(combined[,'gene']),]
+  if(count){
+    tpm_combined <- data.frame('sample'=combined2$sample,'gene'=combined2$gene,'tpm_raw'=combined2$NumReads)
+  }else{
+    tpm_combined <- data.frame('sample'=combined2$sample,'gene'=combined2$gene,'tpm_raw'=combined2$TPM)
+  }
+  tpm_combined_gene <- tpm_combined %>% group_by(sample,gene)%>% summarise_each(funs(sum))
+  
+  tpm_raw <- acast(tpm_combined_gene,gene~sample)
+  return(tpm_raw)
+}
+
+#' get hgnc_symbol from ensembl_gene_id  
 #'
 #' @param ens vector of ensembl_gene_ids.
 #' @return a dataframe with 2 columns: ensembl_gene_id and hgnc_symbol
@@ -77,6 +104,51 @@ ens2symbol <- function(ens){
   ensembl <- useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl")
   target_gene <- getBM(attributes=c('ensembl_gene_id','hgnc_symbol'),filters = 'ensembl_gene_id', values = ens, mart = ensembl)
   return(target_gene)
+}
+
+#' get gene_id1 from gene_id2
+#'
+#' @param ids vector of gene_ids.
+#' @param gene_id1 format of original gene id, must be valid filters name in Ensembl
+#' @param gene_id2 format of destination gene id, must be valid attributes name in Ensembl
+#' @return a dataframe with 2 columns: gene_id1 and gene_id2
+gene_id_mapping <- function(ids,gene_id1='ensembl_gene_id',gene_id2='hgnc_symbol'){
+  ensembl <- useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+  target_gene <- getBM(attributes=c(gene_id1,gene_id2),filters = gene_id1, values = ids, mart = ensembl)
+  return(target_gene)
+}
+
+#' conversion a gene by sample matrix from gene_id1 from gene_id2
+#'
+#' @param m a gene by sample matrix
+#' @param gene_id1 format of original gene id, must be valid filters name in Ensembl
+#' @param gene_id2 format of destination gene id, must be valid attributes name in Ensembl
+#' @return a gene by sample matrix with new gene_id
+gene_matrix_conversion <- function(m,gene_id1='ensembl_gene_id',gene_id2='hgnc_symbol'){
+  target_genes <- gene_id_mapping(rownames(m))
+  target_genes <- target_genes[target_genes[,1]!=''&target_genes[,2]!='',]
+  genes <- target_genes[,2]
+  names(genes) <- target_genes[,1]
+  m <- cbind.data.frame(m,'name'=genes[rownames(m)],stringsAsFactors=F)
+  m <- m[!is.na(m$name),]
+  m2 <- m %>% group_by(name)%>% summarise_each(funs(sum))
+  m3 <- as.matrix(m2[,-1])
+  rownames(m3) <- m2$name
+  return(m3)
+}
+
+
+## Resolves a filename by downloading the file if it's a synapse ID
+## Returns a filename that can be directly used for loading by, e.g., read.delim
+resolve.filename <- function( fn, syn.local   = "~/data/")
+{
+  if( substr( fn, 0, 3 ) == "syn" )
+  {
+    dir.create(syn.local,showWarnings = F)
+    s <- synGet( fn, downloadLocation = syn.local )
+    return( s@filePath )
+  }
+  return( fn )
 }
 
 #' generate .csv file used by bcbio
@@ -88,6 +160,23 @@ get_sample_csv <- function(sample_path){
   y=gsub('\\.fastq','',x)
   z=cbind('samplename'=y,'description'=y)
   write.csv(z,paste(sample_path,'samples.csv',sep = ''),row.names = F,quote = F)
+}
+
+#' generate combined salmon output file from bcbio
+#' 
+#' @param run_path path of bcbio /final folder
+#' @return a tab delimited file contain salmon output
+get_sf <- function(run_path='./'){
+  sf_files <- list.files(path=run_path,pattern='*\\.sf',recursive=T)
+  sf_info <- NULL
+  for(i in sf_files){
+    si <- read.delim(i,as.is = T)
+    si <- cbind(si,'sample'=gsub('salmon/(.+)/quant/.+','\\1',i),'id'=si$Name)
+    sf_info <- rbind(sf_info,si)
+  }
+  sf <- sf_info
+  colnames(sf) <- c('name','length','effectiveLength','tpm','numreads','sample','id')
+  write.table(sf,'combined.sf',sep='\t')
 }
 
 #' wrapper for getting fold change, pvalue and FDR, by per cell line per time point
@@ -116,7 +205,7 @@ edgeR_wrapper <- function(cnt,grp_table,combine_fdr = F,w = NULL,CommonDisp = NU
     TagwiseDisp <- y$tagwise.dispersion
   }
   if(length(grp_table$condition)==unique(length(grp_table$condition))){
-  # When both control and treatment lacking replicates, use overall dispersion instead
+    # When both control and treatment lacking replicates, use overall dispersion instead
     y$common.dispersion <- CommonDisp
     y$tagwise.dispersion <- TagwiseDisp
   }else{
