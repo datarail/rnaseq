@@ -1,0 +1,13 @@
+Well	Timepoint	Treatment
+A1	0h	Control
+B1	3h	Control
+C1	6h	Control
+D1	12h	Control
+E1	24h	Control
+F1	48h	Control
+G1	0h	Drug
+H1	3h	Drug
+A2	6h	Drug
+B2	12h	Drug
+C2	24h	Drug
+D2	48h	Drug
