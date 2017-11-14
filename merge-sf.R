@@ -11,6 +11,7 @@ suppressMessages( library( magrittr ) )
 
 ## Identify all salmon files
 sf.files <- list.files( pattern="quant\\.sf$", recursive=TRUE )
+sf.files <- sf.files[ grep( "final", sf.files ) ]
 cat( "Found the following salmon files:", sf.files, sep="\n" )
 cat( "-------------------------------\n" )
 
@@ -20,8 +21,10 @@ jns <- which( sapply( sspl, nth, -2 ) != "salmon" )
 if( length(jns) > 0 )
 {
     cat( "Warning: the following quant.sf files are not in a salmon directory.\n" )
-    cat( "This can lead to improper sample name inference:\n" )
+    cat( "This can lead to improper sample name inference\n" )
+    cat( "Consider excluding them from the merger\n" )
     cat( sf.files[jns], sep="\n" )
+    cat( "-------------------------------\n" )
 }
 sampleIDs = sapply( sspl, nth, -3 )
 
