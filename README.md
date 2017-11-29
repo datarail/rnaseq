@@ -83,14 +83,16 @@ This is a step-by-step guide on running the `bcbio` pipeline on O2. Old orchestr
 
 ## Running Differential Expression analysis
 
-This GitHub repository includes a simple command-line interface for EdgeR. Simply type `Rscript edge.R` to get information on how to run it. The instructions include an example usage, which uses a counts table and metadata file available in the `example/` subdirectory of this repository. The third argument to the script is a formula defining the grouping of samples for differential expression comparison. For example, to compare samples across the timepoint, one can do
+This GitHub repository includes a simple command-line interface for EdgeR. Simply type `Rscript edge.R` to get information on how to run it. The instructions include an example usage, which uses a counts table and metadata file available in the `example/` subdirectory of this repository. The third argument to the script specifies which column in the meta file should be used for defining differential expression contrasts. Finally, the fourth argument denotes which value in that column should be used as control. For example, to compare samples across timepoints, using 0h as control, one can do
 ```
-Rscript edge.R example/test.count example/meta.tsv "~Timepoint"
+Rscript edge.R example/test.count example/meta.tsv Timepoint 0h
 ```
 Likewise, to perform a comparison along the Treatment column, one would do
 ```
-Rscript edge.R example/test.count example/meta.tsv "~Treatment"
+Rscript edge.R example/test.count example/meta.tsv Treatment Control
 ```
+If the specified column contains more than two categories (such as Timepoint above), edgeR will compare each category to the control. These results will reside in `logFC` columns in the output file. Additionally, edgeR will perform an F-test-like comparison to determine if any genes differ across ALL categories. These results are then captured by the `F`, `PValue` and `FDR` columns.
+
 The metadata file provides some flexibility in defining the comparison. For example, to perform a time-series differential expression analysis for one cell line at a time, one can simply break up their metadata file into multiple files, each limited to the cell line of interest.
 
 ### Advanced differential expression analysis

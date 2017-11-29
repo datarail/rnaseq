@@ -1,0 +1,7 @@
+language: r
+install:
+  - R -e 'source("https://bioconductor.org/biocLite.R"); biocLite( c("tidyverse","stringr","magrittr","edgeR") )'
+script:
+  - Rscript edge.R example/test.count example/meta.tsv Timepoint 0h
+  - Rscript edge.R example/test.count example/meta.tsv Treatment Control
+  
