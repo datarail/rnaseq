@@ -65,12 +65,12 @@ This is a step-by-step guide on running the `bcbio` pipeline on O2. Old orchestr
 * Running this setup creates a project directory and the following subdirectories inside of that: `work`, `config`.
     - NOTE: The project directory will be named `sample_description`. You can control that by substituting a different name in all filenames and commands above.
     
-* Descend into the `work` subdirectory of your project (by default, this is done using `cd sample_description/work`). Move `submit_bcbio.sh` (which is currently two directories above your current location, where your fastq files are) to the current directory, using `mv ../../submit_bcbio.sh .`
+* Descend into the `work` subdirectory of your project (by default, this is done using `cd sample_description/work`). 
     - NOTE: If you changed the name of your project from `sample_description` to something else, edit `submit_bcbio.sh` and specify the correct name in place of `../config/sample_description.yaml`.The path has to point to an actual file in the `config` subdirectory.
 
-* Submit the job to O2 using the following command:
+* From the `work` directory, submit the job to O2 using the following command:
     ```
-    sbatch submit_bcbio.sh
+    sbatch ../../submit_bcbio.sh
     ```
 * Bcbio will give you a .count file as count table generated from featureCounts. This could be used as direct input to the `edge.R` script (see Running Differential Expression section below). The counts file will be located in `../final/2017-10-19_sample_description/combined.counts`, but depending on the current date and the contents of your `sample_description.csv`, the actual path may vary.
 
