@@ -21,7 +21,7 @@ library( stringr )
 
 ## Load all the data
 cat( "Loading counts table from", argv[1], "\n" )
-X <- read.delim( argv[1], row.names=1 )
+X <- read.delim( argv[1], row.names=1, check.names=FALSE )
 cat( "Loading meta data from", argv[2], "\n" )
 M <- read.delim( argv[2], as.is = TRUE )
 

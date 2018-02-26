@@ -49,6 +49,7 @@ This is a step-by-step guide on running the `bcbio` pipeline on O2. Old orchestr
 * Move your fastq files to this directory. (Using `mv` command.)
 
 * Examine `yaml_O2.yaml` and ensure that it has the correct specification. Most of the time, the default content should suffice. Change it only if instructed by the sequencing core.
+   - **NOTE: Add `disambiguate: [mm10]` under the `algorithm` keyword in the .yaml file when working with samples derived from mice xenografts. With this option enabled, the aligner attempts to filter out reads belonging to the mouse genome.**
 
 * Edit `sample_description.csv` (using `nano sample_description.csv`) to match your fastq files. Columns `samplename` and `description` are required. The first should match the filenames of your fastq files. The second column is often set to be the plate position, but can be any abbreviated identifier of your sample. All other columns are optional. The `sample_description.csv` file in this GitHub repository includes an `Index` column as an example. Work with the sequencing core that produced your fastq files to determine if you need additional columns.
 
