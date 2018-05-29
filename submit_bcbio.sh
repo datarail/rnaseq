@@ -8,4 +8,4 @@
 #SBATCH --mem=8000
 
 export PATH=/n/app/bcbio/tools/bin:$PATH
-bcbio_nextgen.py ../config/sample_description.yaml -n 24 -t ipython -s slurm -q medium -r t=4-00:00
+bcbio_nextgen.py ../config/sample_description.yaml -n 24 -t ipython -s slurm -q medium -r t=4-00:00 --timeout 2000
