@@ -1,0 +1,13 @@
+# Template for human RNA-seq using Illumina prepared samples
+---
+details:
+  - analysis: RNA-seq
+    genome_build: hg38
+    algorithm:
+      transcriptome_fasta:  /n/groups/lsp/mariya_ngs/FC_04528/Unaligned_1234_PF_mm1/reference/Homo_sapiens.GRCh38.95.fa
+      transcriptome_gtf:  /n/groups/lsp/mariya_ngs/FC_04528/Unaligned_1234_PF_mm1/reference/Homo_sapiens.GRCh38.95.gtf
+      aligner: hisat2
+      strandedness: firststrand
+      spikein_fasta:  /n/groups/lsp/mariya_ngs/FC_04528/Unaligned_1234_PF_mm1/reference/ERCC92/ERCC92.fa 
+upload:
+  dir: ../final

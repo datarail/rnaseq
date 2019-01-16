@@ -1,0 +1,17 @@
+1. Create merge_config.csv, which tells bcbio which files map to what samples
+2. Run doMerge.sh to combine the four lanes into a single fastq file (for each sample)
+3. Rename resulting merge_config-merged.csv to alignment.csv
+4. Download the reference genome files to reference/ subdirectory:
+wget ftp://ftp.ensembl.org/pub/release-95/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-95/gtf/homo_sapiens/Homo_sapiens.GRCh38.95.gtf.gz
+wget ftp://ftp.ensembl.org/pub/release-95/fasta/homo_sapiens/ncrna/Homo_sapiens.GRCh38.ncrna.fa.gz
+4a. Unzip all reference files
+4b. Concatenate cdna and ncrna -> Homo_sapiens.GRCh38.95.fa
+5. Ensure that the spike-in version in reference/ERCC92 matches the experimental setup
+6. Modify yaml_O2.yaml as needed
+7. Instantiate the bcbio workspace:
+bcbio_nextgen.py -w template yaml_O2.yaml alignment.csv merged/*.fastq.gz
+8. Descend into the work directory:
+cd /n/groups/lsp/mariya_ngs/FC_04528/Unaligned_1234_PF_mm1/alignment/work
+9. Run the aligner:
+sbatch ../../submit_bcbio.sh
