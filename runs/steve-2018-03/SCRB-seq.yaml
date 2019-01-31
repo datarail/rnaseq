@@ -1,0 +1,10 @@
+details:
+  - analysis: scRNA-seq
+    algorithm:
+      transcriptome_fasta: /n/groups/lsp/Rodriguez_DGE1/reference/Homo_sapiens.GRCh38.cdna.all.fa
+      transcriptome_gtf: /n/groups/lsp/Rodriguez_DGE1/reference/Homo_sapiens.GRCh38.91.gtf
+      umi_type: harvard-scrb
+      minimum_barcode_depth: 0
+      cellular_barcode_correction: 1
+      positional_umi: False
+    genome_build: hg38
