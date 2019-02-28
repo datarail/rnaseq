@@ -1,4 +1,8 @@
-# Laboratory of Systems Pharmacology - RNAseq pipeline
+# Deprecated. New set of instructions available at https://labsyspharm.github.io/rnaseq/
+
+This repository is deprecated. Old content available below the horizontal line.
+
+---
 
 This is a step-by-step guide on running the `bcbio` pipeline on O2. Old orchestra instructions are still available [here](https://github.com/datarail/rnaseq/tree/master/Orchestra).
 
